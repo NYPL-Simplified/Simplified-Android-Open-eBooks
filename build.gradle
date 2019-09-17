@@ -174,7 +174,6 @@ Automatic-Module-Name: ${POM_AUTOMATIC_MODULE_NAME}
     }
 
     apply plugin: "digital.wup.android-maven-publish"
-    apply plugin: "signing"
 
     publishing {
         publications {
@@ -260,11 +259,6 @@ Automatic-Module-Name: ${POM_AUTOMATIC_MODULE_NAME}
                 }
             }
         }
-    }
-
-    signing {
-        useGpgCmd()
-        sign publishing.publications.basicJar
     }
 
     repositories {
