@@ -3,13 +3,14 @@
 <resources>
     <color name="oeColorPrimary">#008577</color>
     <color name="oeColorPrimaryDark">#00574B</color>
-    <color name="oeColorAccent">#D81B60</color>
+    <color name="oeColorAccent">#008577</color>
 
     <style name="OEI_NoActionBar" parent="SimplifiedTheme.NoActionBar.Base">
         <item name="simplifiedColorPrimaryLight">@color/oeColorAccent</item>
         <item name="simplifiedColorPrimary">@color/oeColorPrimary</item>
         <item name="simplifiedColorPrimaryDark">@color/oeColorPrimaryDark</item>
     </style>
+
     <style name="OEI_ActionBar" parent="SimplifiedTheme.ActionBar.Base">
         <item name="simplifiedColorPrimaryLight">@color/oeColorAccent</item>
         <item name="simplifiedColorPrimary">@color/oeColorPrimary</item>
