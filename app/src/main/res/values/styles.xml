@@ -1,11 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
 <resources>
+    <color name="oeColorPrimary">#008577</color>
+    <color name="oeColorPrimaryDark">#00574B</color>
+    <color name="oeColorAccent">#D81B60</color>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="OEI_NoActionBar" parent="SimplifiedTheme.NoActionBar.Base">
+        <item name="simplifiedColorPrimaryLight">@color/oeColorAccent</item>
+        <item name="simplifiedColorPrimary">@color/oeColorPrimary</item>
+        <item name="simplifiedColorPrimaryDark">@color/oeColorPrimaryDark</item>
     </style>
-
+    <style name="OEI_ActionBar" parent="SimplifiedTheme.ActionBar.Base">
+        <item name="simplifiedColorPrimaryLight">@color/oeColorAccent</item>
+        <item name="simplifiedColorPrimary">@color/oeColorPrimary</item>
+        <item name="simplifiedColorPrimaryDark">@color/oeColorPrimaryDark</item>
+    </style>
 </resources>
