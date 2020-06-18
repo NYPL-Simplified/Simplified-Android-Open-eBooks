@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <resources>
-    <color name="oeColorPrimary">#008577</color>
-    <color name="oeColorPrimaryDark">#00574B</color>
-    <color name="oeColorAccent">#008577</color>
-
     <style name="OEI_NoActionBar" parent="SimplifiedTheme.NoActionBar.Base">
         <item name="simplifiedColorPrimaryLight">@color/oeColorAccent</item>
         <item name="simplifiedColorPrimary">@color/oeColorPrimary</item>
