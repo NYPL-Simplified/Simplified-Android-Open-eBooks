@@ -7,6 +7,9 @@ import org.nypl.simplified.ui.branding.BrandingSplashServiceType
  */
 
 class OEIBrandingSplashService : BrandingSplashServiceType {
+  override val shouldShowLibrarySelectionScreen: Boolean =
+    false
+
   override fun splashImageResource(): Int {
     return R.drawable.oei_splash
   }

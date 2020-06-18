@@ -7,8 +7,8 @@ import org.nypl.simplified.ui.settings.SettingsConfigurationServiceType
  */
 
 class OEISettingsConfigurationService : SettingsConfigurationServiceType {
-
-  override val allowAccountsAccess: Boolean
-    get() = false
-
+  override val allowAccountsAccess: Boolean =
+    true
+  override val allowAccountsRegistryAccess: Boolean =
+    false
 }

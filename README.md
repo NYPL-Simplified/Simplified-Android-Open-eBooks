@@ -8,8 +8,7 @@ The NYPL's [Open eBooks](https://play.google.com/store/apps/details?id=org.nypl.
 #### Build!
 
 The short version: Install an [Android SDK](#android-sdk), configure
-[credentials for Nexus](#credentials), add a [Bugsnag](#bugsnag)
-API token, add an [Adobe DRM certificate](#adobe-drm), add a
+[credentials for Nexus](#credentials), add [the required configuration files](#configuration-files), add a
 [keystore](#apk-signing) and run:
 
 ~~~
@@ -51,6 +50,18 @@ OpenJDK Runtime Environment (build 1.8.0_222-b05)
 OpenJDK 64-Bit Server VM (build 25.222-b05, mixed mode)
 ~~~
 
+#### Configuration Files
+
+The application requires a range of configuration files for the various
+services. All of these are available in the private NYPL Certificates
+repository.
+
+|Source|Copy To|Description|
+|------|-------|-----------|
+|[google-services.json](https://github.com/NYPL-Simplified/Certificates/blob/master/SimplyE/Android/google-services.json)|`app/google-services.json`|Crashlytics service configuration|
+|[keystore.jks](https://github.com/NYPL-Simplified/Certificates/blob/master/APK%20Signing/nypl-keystore.jks)|`app/keystore.jks`|NYPL APK signing keystore|
+|[ReaderClientCert.sig](https://github.com/NYPL-Simplified/Certificates/tree/master/OpenEbooks/Android/ReaderClientCert.sig)|`app/src/main/assets/ReaderClientCert.sig`|Adobe DRM certificate|
+
 #### Credentials
 
 Our application currently needs packages that are only available from
@@ -71,23 +82,6 @@ org.librarysimplified.nexus.username=USERNAME
 org.librarysimplified.nexus.password=PASSWORD
 ~~~
 
-#### Bugsnag Support
-
-The project currently builds a version of the
-Open eBooks application that supports error reporting via
-[Bugsnag](https://www.bugsnag.com/). This requires that a configuration
-file be placed at `app/src/main/assets/bugsnag.conf`
-containing your Bugsnag API token:
-
-~~~
-bugsnag.api_token = 1234123412341234
-~~~
-
-#### Adobe DRM
-
-The project currently supports Adobe DRM, and an appropriate `ReaderClientCert.sig`
-file must be placed at `app/src/main/assets/ReaderClientCert.sig`.
-
 #### APK signing
 
 For signing releases, a keystore must be copied to
@@ -97,10 +91,13 @@ For signing releases, a keystore must be copied to
 ~~~
 # Replace KEYALIAS, KEYPASSWORD, and STOREPASSWORD appropriately.
 # Do NOT use quotes around values.
-org.nypl.labs.OpenEbooks.app.keyAlias=KEYALIAS
-org.nypl.labs.OpenEbooks.app.keyPassword=KEYPASSWORD
-org.nypl.labs.OpenEbooks.app.storePassword=STOREPASSWORD
+org.librarysimplified.simplye.keyAlias=KEYALIAS
+org.librarysimplified.simplye.keyPassword=KEYPASSWORD
+org.librarysimplified.simplye.storePassword=STOREPASSWORD
 ~~~
+
+See the [nypl-keystore.properties](https://github.com/NYPL-Simplified/Certificates/blob/master/APK%20Signing/nypl-keystore.properties) file
+for the correct values.
 
 ### License
 
