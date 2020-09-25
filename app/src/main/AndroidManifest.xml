@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.nypl.labs.OpenEbooks.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,28 +12,32 @@
     <application
         android:name="org.nypl.simplified.main.MainApplication"
         android:allowBackup="true"
-        android:launchMode="singleTop"
         android:contentDescription="@string/appName"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
+        android:launchMode="singleTop"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/OEI_NoActionBar"
-        android:networkSecurityConfig="@xml/network_security_config">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup">
 
         <!-- Main entry point for the application. -->
         <activity
             android:name="org.nypl.simplified.main.MainActivity"
             android:contentDescription="@string/appName"
             android:exported="true"
-            android:launchMode="singleTop"
-            android:label="@string/appName">
+            android:label="@string/appName"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="simplified-openebooks-oauth" />
             </intent-filter>
         </activity>
@@ -66,6 +71,14 @@
             android:label="@string/appName" />
 
         <activity
+            android:name="org.nypl.simplified.viewer.epub.readium2.ReaderActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:parentActivityName="org.nypl.simplified.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/OEI_ActionBar" />
+
+        <activity
             android:name="org.nypl.simplified.viewer.pdf.PdfReaderActivity"
             android:contentDescription="@string/appName"
             android:exported="false"
@@ -82,5 +95,6 @@
             android:contentDescription="@string/appName"
             android:exported="false"
             android:label="@string/appName" />
+
     </application>
 </manifest>
