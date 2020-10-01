@@ -59,6 +59,7 @@ android {
         versionName = version.get(0)
         versionCode = version.get(1)
         setProperty("archivesBaseName", "open-ebooks-${versionName}-${versionCode}")
+        applicationId "org.nypl.labs.OpenEbooks.app"
     }
 
     lintOptions {
