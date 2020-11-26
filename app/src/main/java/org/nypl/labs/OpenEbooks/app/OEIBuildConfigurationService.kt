@@ -17,8 +17,6 @@ class OEIBuildConfigurationService : BuildConfigurationServiceType {
     get() = "[Open eBooks error report]"
   override val oauthCallbackScheme: BuildConfigOAuthScheme
     get() = BuildConfigOAuthScheme("simplified-openebooks-oauth")
-  override val showChangeAccountsUi: Boolean
-    get() = false
   override val showDebugBookDetailStatus: Boolean
     get() = false
   override val simplifiedVersion: String
