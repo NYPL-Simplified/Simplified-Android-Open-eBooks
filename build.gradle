@@ -137,7 +137,7 @@ task preFlightChecks {
 
   def requiredFiles = [:]
   requiredFiles["app/google-services.json"] =
-    "98cf50e0ed5fea9e371990d58b0bbbdb797dc8189d7ca52e7b89a48e82ac96e3"
+    "ee214bab03f454f7ae953acc50fbbe53301d11ae8dff062d112c6cb4f5cf136e"
   requiredFiles["app/keystore.jks"] =
     "ce7c883508ff259682fbdb5eb462e7bf43937d42c7fcc6aa73eb9120d56d48b7"
   requiredFiles["app/src/main/assets/ReaderClientCert.sig"] =
