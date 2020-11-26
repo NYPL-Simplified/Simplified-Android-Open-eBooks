@@ -41,10 +41,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias findProperty("org.librarysimplified.openebooks.keyAlias")
-            keyPassword findProperty("org.librarysimplified.openebooks.keyPassword")
-            storeFile file("keystore.jks")
-            storePassword findProperty("org.librarysimplified.openebooks.storePassword")
+          keyAlias nyplSigningKeyAlias
+          keyPassword nyplSigningKeyPassword
+          storeFile file("keystore.jks")
+          storePassword nyplSigningStorePassword
         }
     }
 

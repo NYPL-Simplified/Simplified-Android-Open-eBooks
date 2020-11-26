@@ -50,27 +50,27 @@ ext {
     assert (nyplNexusPassword != null)
   }
 
-  if (!project.hasProperty("org.librarysimplified.simplye.keyPassword")) {
+  if (!project.hasProperty("org.librarysimplified.openebooks.keyPassword")) {
     throw new IllegalArgumentException(
-      "Missing project property: org.librarysimplified.simplye.keyPassword")
+      "Missing project property: org.librarysimplified.openebooks.keyPassword")
   } else {
-    nyplSigningKeyPassword = project.property("org.librarysimplified.simplye.keyPassword")
+    nyplSigningKeyPassword = project.property("org.librarysimplified.openebooks.keyPassword")
     assert (nyplSigningKeyPassword != null)
   }
 
-  if (!project.hasProperty("org.librarysimplified.simplye.storePassword")) {
+  if (!project.hasProperty("org.librarysimplified.openebooks.storePassword")) {
     throw new IllegalArgumentException(
-      "Missing project property: org.librarysimplified.simplye.storePassword")
+      "Missing project property: org.librarysimplified.openebooks.storePassword")
   } else {
-    nyplSigningStorePassword = project.property("org.librarysimplified.simplye.storePassword")
+    nyplSigningStorePassword = project.property("org.librarysimplified.openebooks.storePassword")
     assert (nyplSigningStorePassword != null)
   }
 
-  if (!project.hasProperty("org.librarysimplified.simplye.keyAlias")) {
+  if (!project.hasProperty("org.librarysimplified.openebooks.keyAlias")) {
     throw new IllegalArgumentException(
-      "Missing project property: org.librarysimplified.simplye.keyAlias")
+      "Missing project property: org.librarysimplified.openebooks.keyAlias")
   } else {
-    nyplSigningKeyAlias = project.property("org.librarysimplified.simplye.keyAlias")
+    nyplSigningKeyAlias = project.property("org.librarysimplified.openebooks.keyAlias")
     assert (nyplSigningKeyAlias != null)
   }
 
@@ -340,19 +340,6 @@ Automatic-Module-Name: ${POM_AUTOMATIC_MODULE_NAME}
               url = "https://github.com/twaddington"
             }
           }
-        }
-      }
-    }
-
-    repositories {
-      maven {
-        def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-        def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-        url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
-
-        credentials(PasswordCredentials) {
-          username nexusUsername
-          password nexusPassword
         }
       }
     }
