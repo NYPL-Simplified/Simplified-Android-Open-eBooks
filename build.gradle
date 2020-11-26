@@ -371,3 +371,15 @@ Automatic-Module-Name: ${POM_AUTOMATIC_MODULE_NAME}
     }
   }
 }
+
+/*
+ * These tasks are called as part of the CI interface, but do nothing here.
+ */
+
+task ktlint {
+
+}
+
+task verifySemanticVersioning {
+
+}
