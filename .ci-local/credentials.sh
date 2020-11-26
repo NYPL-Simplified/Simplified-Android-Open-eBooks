@@ -31,12 +31,12 @@ fi
 
 info "installing Adobe DRM certificate"
 
-cp -v ".ci/credentials/OpenEBooks/Android/ReaderClientCert.sig" \
+cp -v ".ci/credentials/OpenEbooks/Android/ReaderClientCert.sig" \
   "app/src/main/assets/ReaderClientCert.sig" || exit 1
 
 info "installing crashlytics configuration"
 
-cp -v ".ci/credentials/OpenEBooks/Android/google-services.json" \
+cp -v ".ci/credentials/OpenEbooks/Android/google-services.json" \
    "app/google-services.json" || exit 1
 
 info "installing keystore"
