@@ -27,4 +27,6 @@ class OEIBuildConfigurationService : BuildConfigurationServiceType {
     true
   override val allowAccountsRegistryAccess: Boolean =
     false
+  override val showChangeAccountsUi: Boolean =
+    false
 }
