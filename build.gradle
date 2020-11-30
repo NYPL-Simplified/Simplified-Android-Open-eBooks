@@ -1,9 +1,11 @@
+import java.security.MessageDigest
+
 buildscript {
-  if ("$gradle.gradleVersion" != "6.3") {
-    throw new GradleException("Gradle version 6.3 is required (received $gradle.gradleVersion)")
+  if ("$gradle.gradleVersion" != "6.7") {
+    throw new GradleException("Gradle version 6.7 is required (received $gradle.gradleVersion)")
   }
 
-  ext.kotlin_version = "1.3.72"
+  ext.kotlin_version = "1.4.10"
 
   repositories {
     mavenCentral()
@@ -12,19 +14,17 @@ buildscript {
   }
 
   dependencies {
-    classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:5.1.2"
+    classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:5.2.0"
     classpath "com.nabilhachicha:android-native-dependencies:0.1.2"
     classpath "digital.wup:android-maven-publish:3.6.3"
-    classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.2"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    classpath 'com.android.tools.build:gradle:4.0.1'
+    classpath 'com.android.tools.build:gradle:4.1.1'
   }
 }
 
 plugins {
   id "com.github.ben-manes.versions" version "0.22.0"
   id "digital.wup.android-maven-publish" version "3.6.2"
-  id "io.codearte.nexus-staging" version "0.21.2"
   id "ru.vyarus.animalsniffer" version "1.5.0"
 }
 
@@ -34,16 +34,63 @@ ext {
   androidMinimumSDKVersion = 21
   androidTargetSDKVersion = 29
 
-  if (!project.hasProperty("nexusUsername")) {
-    logger.warn("No nexusUsername property specified: Using an empty value")
-    nexusUsername = ""
-  }
-  if (!project.hasProperty("nexusPassword")) {
-    logger.warn("No nexusPassword property specified: Using an empty value")
-    nexusPassword = ""
+  if (!project.hasProperty("org.librarysimplified.nexus.username")) {
+    throw new IllegalArgumentException(
+      "Missing project property: org.librarysimplified.nexus.username")
+  } else {
+    nyplNexusUsername = project.property("org.librarysimplified.nexus.username")
+    assert (nyplNexusUsername != null)
   }
 
-  nyplFindawayVersion = "5.0.0"
+  if (!project.hasProperty("org.librarysimplified.nexus.password")) {
+    throw new IllegalArgumentException(
+      "Missing project property: org.librarysimplified.nexus.password")
+  } else {
+    nyplNexusPassword = project.property("org.librarysimplified.nexus.password")
+    assert (nyplNexusPassword != null)
+  }
+
+  if (!project.hasProperty("org.librarysimplified.openebooks.keyPassword")) {
+    throw new IllegalArgumentException(
+      "Missing project property: org.librarysimplified.openebooks.keyPassword")
+  } else {
+    nyplSigningKeyPassword = project.property("org.librarysimplified.openebooks.keyPassword")
+    assert (nyplSigningKeyPassword != null)
+  }
+
+  if (!project.hasProperty("org.librarysimplified.openebooks.storePassword")) {
+    throw new IllegalArgumentException(
+      "Missing project property: org.librarysimplified.openebooks.storePassword")
+  } else {
+    nyplSigningStorePassword = project.property("org.librarysimplified.openebooks.storePassword")
+    assert (nyplSigningStorePassword != null)
+  }
+
+  if (!project.hasProperty("org.librarysimplified.openebooks.keyAlias")) {
+    throw new IllegalArgumentException(
+      "Missing project property: org.librarysimplified.openebooks.keyAlias")
+  } else {
+    nyplSigningKeyAlias = project.property("org.librarysimplified.openebooks.keyAlias")
+    assert (nyplSigningKeyAlias != null)
+  }
+
+  if (!project.hasProperty("org.librarysimplified.nexus.password")) {
+    throw new IllegalArgumentException(
+      "Missing project property: org.librarysimplified.nexus.password")
+  } else {
+    nyplNexusPassword = project.property("org.librarysimplified.nexus.password")
+    assert (nyplNexusPassword != null)
+  }
+
+  if (project.hasProperty("org.librarysimplified.no_signing")) {
+    disableSigning = true
+    logger.warn("org.librarysimplified.no_signing is set: We will not sign artifacts")
+  } else {
+    disableSigning = false
+    logger.warn("org.librarysimplified.no_signing is not set: We will attempt to sign artifacts")
+  }
+
+  nyplFindawayVersion = "6.0.0"
   simplifiedVersion = "6.4.0"
   firebaseVersion = "17.2.2"
 }
@@ -79,29 +126,44 @@ allprojects {
   version = project.ext["VERSION_NAME"]
 }
 
+static def sha256Of(File file) {
+  MessageDigest digest = MessageDigest.getInstance("SHA-256")
+  digest.update(file.getBytes())
+  return digest.digest().encodeHex().toString()
+}
+
 task preFlightChecks {
   logger.info("running pre-flight checks")
 
-  def requiredFiles = [
-    "app/google-services.json",
-    "app/keystore.jks",
-    "app/src/main/assets/ReaderClientCert.sig"
-  ]
+  def requiredFiles = [:]
+  requiredFiles["app/google-services.json"] =
+    "ee214bab03f454f7ae953acc50fbbe53301d11ae8dff062d112c6cb4f5cf136e"
+  requiredFiles["app/keystore.jks"] =
+    "ce7c883508ff259682fbdb5eb462e7bf43937d42c7fcc6aa73eb9120d56d48b7"
+  requiredFiles["app/src/main/assets/ReaderClientCert.sig"] =
+    "633ef827f8815c40f077ffcdb8edae7a7ad00aedd5806438abdaf48e9c3b59fe"
 
   def missingFiles = []
-  for (requiredFile in requiredFiles) {
-    logger.info("Checking ${requiredFile} exists")
+  for (entry in requiredFiles) {
+    logger.info("Checking ${entry.key} exists and has expected digest value")
 
     try {
-      file(requiredFile).getText()
+      def received = sha256Of(file(entry.key))
+      def expected = entry.value
+      if (received != expected) {
+        logger.error("ERROR: File ${entry.key} has incorrect SHA-256 hash")
+        logger.error("  Expected: ${expected}")
+        logger.error("  Received: ${received}")
+        missingFiles.add(entry.key)
+      }
     } catch (Exception e) {
-      logger.error("ERROR: Could not open required file ${requiredFile}: ${e.getClass()}: ${e.getMessage()}")
-      missingFiles.add(requiredFile)
+      logger.error("ERROR: Could not open required file ${entry.key}: ${e.getClass()}: ${e.getMessage()}")
+      missingFiles.add(entry.key)
     }
   }
 
   if (!missingFiles.isEmpty()) {
-    throw new FileNotFoundException("One or more required files are missing")
+    throw new FileNotFoundException("One or more required files are missing or have incorrect contents.")
   }
 }
 
@@ -281,19 +343,6 @@ Automatic-Module-Name: ${POM_AUTOMATIC_MODULE_NAME}
         }
       }
     }
-
-    repositories {
-      maven {
-        def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-        def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-        url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
-
-        credentials(PasswordCredentials) {
-          username nexusUsername
-          password nexusPassword
-        }
-      }
-    }
   }
 
   repositories {
@@ -321,4 +370,16 @@ Automatic-Module-Name: ${POM_AUTOMATIC_MODULE_NAME}
       url "http://maven.findawayworld.com/artifactory/libs-release/"
     }
   }
+}
+
+/*
+ * These tasks are called as part of the CI interface, but do nothing here.
+ */
+
+task ktlint {
+
+}
+
+task verifySemanticVersioning {
+
 }
