@@ -91,7 +91,7 @@ ext {
   }
 
   nyplFindawayVersion = "6.0.0"
-  simplifiedVersion = "6.4.0"
+  simplifiedVersion = "6.5.0-SNAPSHOT"
   firebaseVersion = "17.2.2"
 }
 
