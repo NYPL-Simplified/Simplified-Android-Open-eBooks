@@ -73,7 +73,6 @@ dependencies {
     implementation libraries.simplifiedAccountSourceNYPLRegistry
     implementation libraries.simplifiedAnalyticsCirculation
     implementation libraries.simplifiedMain
-    implementation libraries.instabug
     implementation libraries.firebaseAnalytics
     implementation libraries.firebaseCrashlytics
 
